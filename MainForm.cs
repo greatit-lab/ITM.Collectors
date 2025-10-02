@@ -19,12 +19,12 @@ namespace Onto.LampLifeCollector
 
         private void MainForm_Load(object sender, EventArgs e)
         {
-            // Set initial UI state
+            // 초기 UI 상태 설정
             UpdateUIForStoppedState();
             
-            // Configure the tray icon
+            // 트레이 아이콘 설정
             trayIcon.Icon = this.Icon;
-            trayIcon.Text = "Onto LampLife Collector";
+            trayIcon.Text = "LT Collector";
             trayIcon.Visible = true;
         }
 
@@ -44,7 +44,7 @@ namespace Onto.LampLifeCollector
 
             UpdateUIForRunningState();
 
-            // Immediately run the first collection
+            // 시작하자마자 1회 즉시 실행
             ExecuteCollectionAsync();
         }
 
@@ -65,10 +65,10 @@ namespace Onto.LampLifeCollector
         {
             try
             {
-                // Run in a background thread using Task.Run to avoid blocking the UI
+                // UI 스레드가 멈추지 않도록 Task.Run을 사용하여 백그라운드에서 실행
                 await Task.Run(() => _collector.Execute());
 
-                // Safely update the UI from the UI thread
+                // UI 업데이트는 Invoke를 통해 안전하게 호출
                 this.Invoke((MethodInvoker)delegate {
                     lblStatus.Text = $"Last Collection: {DateTime.Now:HH:mm:ss}";
                     lblStatus.ForeColor = Color.Green;
@@ -76,7 +76,7 @@ namespace Onto.LampLifeCollector
             }
             catch (Exception ex)
             {
-                 this.Invoke((MethodInvoker)delegate {
+                this.Invoke((MethodInvoker)delegate {
                     lblStatus.Text = $"Error occurred: {DateTime.Now:HH:mm:ss}";
                     lblStatus.ForeColor = Color.Red;
                 });
@@ -91,7 +91,7 @@ namespace Onto.LampLifeCollector
             btnStop.Enabled = true;
             numInterval.Enabled = false;
         }
-        
+
         private void UpdateUIForStoppedState()
         {
             lblStatus.Text = "Status: Stopped";
@@ -101,7 +101,7 @@ namespace Onto.LampLifeCollector
             numInterval.Enabled = true;
         }
 
-        // Hide the form to the system tray instead of closing
+        // X 버튼 클릭 시 종료 대신 트레이로 숨기기
         private void MainForm_FormClosing(object sender, FormClosingEventArgs e)
         {
             if (e.CloseReason == CloseReason.UserClosing)
@@ -112,30 +112,31 @@ namespace Onto.LampLifeCollector
             }
         }
 
-        // Show the form when the tray icon is double-clicked
+        // 트레이 아이콘 더블클릭 시 창 보이기
         private void trayIcon_DoubleClick(object sender, EventArgs e)
         {
             ShowForm();
         }
 
-        // 'Open' from tray menu
+        // 트레이 메뉴 '열기'
         private void openToolStripMenuItem_Click(object sender, EventArgs e)
         {
             ShowForm();
         }
         
-        // 'Exit' from tray menu
+        // 트레이 메뉴 '종료'
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
-            // Clean up resources
+            // 타이머 정리
             _collectTimer?.Stop();
             _collectTimer?.Dispose();
+            // 트레이 아이콘 정리
             trayIcon.Visible = false;
             trayIcon.Dispose();
-            // Exit the application
+            // 완전 종료
             Application.Exit();
         }
-        
+
         private void ShowForm()
         {
             this.Show();
