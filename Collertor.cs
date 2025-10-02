@@ -75,9 +75,9 @@ namespace Onto.LampLifeCollector
 
                         var newLamp = new LampInfo
                         {
-                            LampId      = item.Name,
-                            Age         = cells.FirstOrDefault(c => c.AutomationId == "ListViewSubItem-1")?.Name,
-                            LifeSpan    = cells.FirstOrDefault(c => c.AutomationId == "ListViewSubItem-2")?.Name,
+                            LampId = item.Name,
+                            Age = cells.FirstOrDefault(c => c.AutomationId == "ListViewSubItem-1")?.Name,
+                            LifeSpan = cells.FirstOrDefault(c => c.AutomationId == "ListViewSubItem-2")?.Name,
                             LastChanged = cells.FirstOrDefault(c => c.AutomationId == "ListViewSubItem-4")?.Name
                         };
 
