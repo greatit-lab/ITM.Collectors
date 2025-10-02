@@ -21,7 +21,7 @@ namespace Onto.LampLifeCollector
         {
             // 초기 UI 상태 설정
             UpdateUIForStoppedState();
-            
+
             // 트레이 아이콘 설정
             trayIcon.Icon = this.Icon;
             trayIcon.Text = "LT Collector";
@@ -123,7 +123,7 @@ namespace Onto.LampLifeCollector
         {
             ShowForm();
         }
-        
+
         // 트레이 메뉴 '종료'
         private void exitToolStripMenuItem_Click(object sender, EventArgs e)
         {
